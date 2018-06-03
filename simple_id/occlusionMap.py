@@ -106,7 +106,7 @@ def genMaps(targets, outputDir, w2vPath, modelPath):
         for i, row in df.iterrows():
             print(row['wos_id'])
             outFname = os.path.join(outputDir, row['wos_id'].split(':')[1] + '.csv')
-            if os.isfile(outFname):
+            if os.path.isfile(outFname):
                 print("skipping")
             else:
                 makeVarArray(row['title'], row['abstract'], w2vPath, modelPath, outputFile = outFname)
