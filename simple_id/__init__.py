@@ -9,5 +9,6 @@ from .utilities import *#compareRows, varsFromRow, genWordVecs
 from .processing_helpers import *
 from .training import *
 from .latex import *
+from .occlusionMap import *
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'

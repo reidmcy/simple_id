@@ -55,8 +55,10 @@ def varsFromRow(row, w2v = None):
         abVec = torch.autograd.Variable(torch.from_numpy(np.stack(row['abstract_vecs'])).unsqueeze(0))
 
         tiVec = torch.autograd.Variable(torch.from_numpy(np.stack(row['title_vecs'])).unsqueeze(0))
-
-        yVec = torch.autograd.Variable(torch.from_numpy(np.array([row['class']])))
+        try:
+            yVec = torch.autograd.Variable(torch.from_numpy(np.array([row['class']])))
+        except KeyError:
+            yVec = torch.autograd.Variable(torch.from_numpy(np.array([-1])))
     else:
         try:
             abVec = torch.autograd.Variable(torch.from_numpy(np.stack(genVecSeq(row['abstract_tokens'], w2v))).unsqueeze(0))
