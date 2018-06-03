@@ -42,9 +42,14 @@ def makeVarArray(title, abstract, w2vPath, modelPath, outputFile = None):
             predT.append(float(pred['probPos']))
         preds.append(predT)
     print("Returning")
-    df =  pandas.DataFrame(preds,
-                    index=row_dict['title_tokens'],
-                    columns=np.sum(row_dict['abstract_tokens']))
+    try:
+        df =  pandas.DataFrame(preds,
+                        index=row_dict['title_tokens'],
+                        columns=np.sum(row_dict['abstract_tokens']))
+    except TypeError:
+        df =  pandas.DataFrame(preds,
+                        index=row_dict['title_tokens'],
+                        columns=row_dict['abstract_tokens'])
     if outputFile:
         df.to_csv(outputFile)
         return 1
