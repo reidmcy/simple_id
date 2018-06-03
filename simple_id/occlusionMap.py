@@ -99,6 +99,8 @@ def genMaps(targets, outputDir, w2vPath, modelPath):
     for path in os.scandir(targets):
         if not path.name.endswith('.csv'):
             continue
+        print(f"starting: {path.path}" )
         df = pandas.read_csv(path.path)
         for i, row in df.iterrows():
+            print(row['wos_id'])
             makeVarArray(row['title'], row['abstract'], w2vPath, modelPath, outputFile = os.path.join(outputDir, row['wos_id'].split(':')[1] + '.csv'))
