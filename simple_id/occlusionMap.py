@@ -100,7 +100,7 @@ def genMaps(targets, outputDir, w2vPath, modelPath):
         if not path.name.endswith('.csv'):
             continue
         print(f"starting: {path.path}" )
-        df = pandas.read_csv(path.path)
+        df = pandas.read_csv(path.path, index_col =0)
         for i, row in df.iterrows():
             print(row['wos_id'])
             makeVarArray(row['title'], row['abstract'], w2vPath, modelPath, outputFile = os.path.join(outputDir, row['wos_id'].split(':')[1] + '.csv'))
