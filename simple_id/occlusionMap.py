@@ -105,4 +105,4 @@ def genMaps(targets, outputDir, w2vPath, modelPath):
             df['wos_id'] = df.index
         for i, row in df.iterrows():
             print(row['wos_id'])
-            #makeVarArray(row['title'], row['abstract'], w2vPath, modelPath, outputFile = os.path.join(outputDir, row['wos_id'].split(':')[1] + '.csv'))
+            makeVarArray(row['title'], row['abstract'], w2vPath, modelPath, outputFile = os.path.join(outputDir, row['wos_id'].split(':')[1] + '.csv'))
