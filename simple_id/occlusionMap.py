@@ -3,6 +3,8 @@ from .utilities import tokenizer, sentinizer
 import zipfile
 import tempfile
 import io
+import os
+import os.path
 
 import gensim
 import torch
@@ -15,6 +17,8 @@ def checker():
 def makeVarArray(title, abstract, w2vPath, modelPath, outputFile = None):
     print("loading model")
     Net = torch.load(modelPath)
+    if torch.cuda.is_available():
+        Net = Net.cuda()
     print("Tokenizing")
     row_dict = {
         'title_tokens' : tokenizer(title),
@@ -90,3 +94,11 @@ def genVecSeqWithZip(target, zipPath):
         except KeyError:
             pass
     return vecs
+
+def genMaps(targets, outputDir, w2vPath, modelPath):
+    for path in os.scandir(targets):
+        if not path.name.endswith('.csv'):
+            continue
+        df = pandas.read_csv(path.path)
+        for i, row in df.iterrows():
+            makeVarArray(row['title'], row['abstract'], w2vPath, modelPath, outputFile = os.path.join(outputDir, row['wos_id'].split(':')[1] + '.csv'))
