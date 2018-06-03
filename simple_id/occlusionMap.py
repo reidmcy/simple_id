@@ -43,13 +43,16 @@ def makeVarArray(title, abstract, w2vPath, modelPath, outputFile = None):
         preds.append(predT)
     print("Returning")
     try:
-        df =  pandas.DataFrame(preds,
-                        index=row_dict['title_tokens'],
-                        columns=np.sum(row_dict['abstract_tokens']))
-    except TypeError:
-        df =  pandas.DataFrame(preds,
-                        index=row_dict['title_tokens'],
-                        columns=row_dict['abstract_tokens'])
+        try:
+            df =  pandas.DataFrame(preds,
+                            index=row_dict['title_tokens'],
+                            columns=np.sum(row_dict['abstract_tokens']))
+        except TypeError:
+            df =  pandas.DataFrame(preds,
+                            index=row_dict['title_tokens'],
+                            columns=row_dict['abstract_tokens'][0])
+    except:
+        import pdb; pdb.set_trace()
     if outputFile:
         df.to_csv(outputFile)
         return 1
