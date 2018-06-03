@@ -14,7 +14,7 @@ def checker():
 
 def makeVarArray(title, abstract, w2vPath, modelPath, outputFile = None):
     print("loading model")
-    Net = torch.load(modelPath).cuda()
+    Net = torch.load(modelPath)
     print("Tokenizing")
     row_dict = {
         'title_tokens' : tokenizer(title),
