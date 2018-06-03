@@ -101,6 +101,8 @@ def genMaps(targets, outputDir, w2vPath, modelPath):
             continue
         print(f"starting: {path.path}" )
         df = pandas.read_csv(path.path, index_col =0)
+        if 'wos_id' not in df.columns:
+            df['wos_id'] = df.index
         for i, row in df.iterrows():
             print(row['wos_id'])
-            makeVarArray(row['title'], row['abstract'], w2vPath, modelPath, outputFile = os.path.join(outputDir, row['wos_id'].split(':')[1] + '.csv'))
+            #makeVarArray(row['title'], row['abstract'], w2vPath, modelPath, outputFile = os.path.join(outputDir, row['wos_id'].split(':')[1] + '.csv'))
