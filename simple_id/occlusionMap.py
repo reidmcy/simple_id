@@ -6,17 +6,25 @@ import io
 
 import gensim
 import torch
+import pandas
 import numpy as np
 
-def makeVarArray(title, abstract, w2vPath, modelPath):
+def checker():
+    return pandas.DataFrame({'a' : [1,2,3],'b' : [1,2,3],'c' : [1,2,3]})
+
+def makeVarArray(title, abstract, w2vPath, modelPath, outputFile = None):
+    print("loading model")
     Net = torch.load(modelPath).cuda()
+    print("Tokenizing")
     row_dict = {
         'title_tokens' : tokenizer(title),
         'abstract_tokens' : sentinizer(abstract),
     }
+    print("W2Ving")
     row_dict['title_vecs'] = genVecSeqWithZip(row_dict['title_tokens'], w2vPath)
     row_dict['abstract_vecs'] = genVecSeqWithZip(row_dict['abstract_tokens'], w2vPath)
     preds = []
+    print("Making predictions")
     for i in range(len(row_dict['title_vecs'])):
         predT = []
         for j in range(len(row_dict['abstract_vecs'])):
@@ -29,7 +37,15 @@ def makeVarArray(title, abstract, w2vPath, modelPath):
             pred = Net.predictRow(newDict)
             predT.append(float(pred['probPos']))
         preds.append(predT)
-    return row_dict, preds
+    print("Returning")
+    df =  pandas.DataFrame(preds,
+                    index=row_dict['title_tokens'],
+                    columns=np.sum(row_dict['abstract_tokens']))
+    if outputFile:
+        df.to_csv(outputFile)
+        return 1
+    else:
+        return df
 
 def w2vToZip(w2v, zipName):
     n = len(w2v.wv.vocab)
@@ -52,7 +68,7 @@ def w2vToZip(w2v, zipName):
 def w2vZipLookup(words, zipLoc):
     words = set(words)
     retMapping = {}
-    with zipfile.ZipFile('w2v.zip', 'r') as myzip:
+    with zipfile.ZipFile(zipLoc, 'r') as myzip:
         for word in words:
             with myzip.open(word.lower()) as myfile:
                 f = io.BytesIO(myfile.read())
