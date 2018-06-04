@@ -9,6 +9,9 @@ if __name__ == '__main__':
         name = 'simple_id',
         version = versionString,
         author="Reid McIlroy-Young",
+        author_email = "reidmcy@uchicago.edu",
+        url="https://github.com/reidmcy/simple_id",
+        download_url = "https://github.com/reidmcy/simple_id/archive/{}.tar.gz".format(versionString),
         packages = ['simple_id'],
         classifiers=[
             'Development Status :: 2 - Pre-Alpha',
